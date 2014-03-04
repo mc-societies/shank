@@ -23,6 +23,11 @@ public abstract class ModuleAdapter implements Module {
         return binder().bind(literal).annotatedWith(Names.named(name));
     }
 
+    @SuppressWarnings("unchecked")
+    protected <T> void bindNamedInstance(String name, T instance) {
+        bindNamedInstance(name, (Class<Object>) instance.getClass(), instance);
+    }
+
     protected <T> void bindNamedInstance(String name, Class<T> clazz, T instance) {
         bindNamed(name, clazz).toInstance(instance);
     }
