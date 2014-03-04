@@ -3,17 +3,18 @@ package net.catharos.lib.shank.logging;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
-import net.catharos.engine.core.filesystem.Directory;
 import org.apache.logging.log4j.core.LoggerContext;
+
+import java.io.File;
 
 /**
  * Represents a LoggingModule
  */
 public class LoggingModule implements Module {
-    private final Directory directory;
+    private final File directory;
     private final LoggerContext context;
 
-    public LoggingModule(Directory directory, LoggerContext context) {
+    public LoggingModule(File directory, LoggerContext context) {
         this.directory = directory;
         this.context = context;
     }

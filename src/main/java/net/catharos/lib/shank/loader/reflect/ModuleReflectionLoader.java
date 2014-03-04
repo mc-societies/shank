@@ -2,10 +2,8 @@ package net.catharos.lib.shank.loader.reflect;
 
 import com.google.common.collect.Sets;
 import com.google.inject.Module;
-import net.catharos.engine.core.filesystem.Directory;
 import net.catharos.lib.shank.loader.ModuleClassLoader;
 import net.catharos.lib.shank.loader.ModuleDirectoryLoader;
-import org.apache.logging.log4j.Logger;
 import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
@@ -13,6 +11,7 @@ import org.reflections.scanners.TypeAnnotationsScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 
+import java.io.File;
 import java.net.URL;
 import java.util.Set;
 
@@ -24,8 +23,8 @@ public class ModuleReflectionLoader extends ModuleDirectoryLoader {
 
     private final String prefix;
 
-    public ModuleReflectionLoader(ClassLoader defaultParent, Directory modulesDirectory, String prefix, Logger logger) {
-        super(defaultParent, modulesDirectory, logger);
+    public ModuleReflectionLoader(ClassLoader defaultParent, File modulesDirectory, String prefix) {
+        super(defaultParent, modulesDirectory);
         this.prefix = prefix;
     }
 

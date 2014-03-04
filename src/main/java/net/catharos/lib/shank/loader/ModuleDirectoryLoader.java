@@ -1,17 +1,12 @@
 package net.catharos.lib.shank.loader;
 
-import net.catharos.engine.core.filesystem.Directory;
+import net.catharos.lib.core.util.ExtensionFilter;
 import net.catharos.lib.shank.ModuleDescription;
 import net.catharos.lib.shank.loader.reflect.RegisteredModule;
-import net.catharos.engine.core.util.NIOExtensionFilter;
-import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,25 +14,19 @@ import java.util.Set;
  * Represents a ModuleDirectoryLoader
  */
 public abstract class ModuleDirectoryLoader extends ModuleLoader {
-    private static final NIOExtensionFilter ARCHIVE_FILTER = new NIOExtensionFilter("jar", "zip", "plugin");
+    private static final ExtensionFilter ARCHIVE_FILTER = new ExtensionFilter("jar", "zip", "plugin");
 //    private final ObjectMapper mapper = new ObjectMapper();
 
-    private final Logger logger;
-
-    public ModuleDirectoryLoader(ClassLoader defaultParent, Directory modulesDirectory, Logger logger)  {
+    public ModuleDirectoryLoader(ClassLoader defaultParent, File modulesDirectory) {
         super(defaultParent, modulesDirectory);
-        this.logger = logger;
     }
 
     @Override
     public Set<ModuleDescription> loadDescriptions() throws ModuleLoadingException {
-        Set<ModuleDescription> modules = new HashSet<>();
+        Set<ModuleDescription> modules = new HashSet<ModuleDescription>();
 
-        try {
-            DirectoryStream<Path> stream = Files.newDirectoryStream(getModulesDirectory().toPath(), ARCHIVE_FILTER);
-
-            for (Path path : stream) {
-                String absolutePath = path.toRealPath().toString();
+        for (File path : getModulesDirectory().listFiles(ARCHIVE_FILTER)) {
+            String absolutePath = path.getAbsolutePath();
 
 //                ZipFile zf;
 //                try {
@@ -58,35 +47,26 @@ public abstract class ModuleDirectoryLoader extends ModuleLoader {
 //
 //                JsonNode modulesClassesJson = moduleConfig.get("modules");
 
+            URL url;
 
-                URL url;
-                try {
-                    url = path.toUri().toURL();
-                } catch (MalformedURLException e) {
-                    throw new ModuleLoadingException(null, "Could not create an url of the file " + absolutePath + "!");
-                }
-
-                ModuleClassLoader moduleClassLoader = new ModuleClassLoader(getParentClassLoader(), url);
-
-                for (Class<?> moduleClass : getModuleClasses(url, moduleClassLoader)) {
-                    RegisteredModule annotation = moduleClass.getAnnotation(RegisteredModule.class);
-                    String name = annotation.name();
-
-                    ModuleDescription<URL>  description = new ModuleDescription<>(name, moduleClass, url, moduleClassLoader);
-                    modules.add(description);
-
-                    moduleClassLoader.setModule(description);
-
-                    logger.info("Loaded module %s!", name);
-                }
+            try {
+                url = path.toURI().toURL();
+            } catch (MalformedURLException e) {
+                throw new ModuleLoadingException(null, "Could not create an url of the file " + absolutePath + "!");
             }
 
-            stream.close();
+            ModuleClassLoader moduleClassLoader = new ModuleClassLoader(getParentClassLoader(), url);
 
-        } catch (IOException e) {
-            logger.catching(e);
+            for (Class<?> moduleClass : getModuleClasses(url, moduleClassLoader)) {
+                RegisteredModule annotation = moduleClass.getAnnotation(RegisteredModule.class);
+                String name = annotation.name();
+
+                ModuleDescription<URL> description = new ModuleDescription<URL>(name, moduleClass, url, moduleClassLoader);
+                modules.add(description);
+
+                moduleClassLoader.setModule(description);
+            }
         }
-
         return modules;
     }
 

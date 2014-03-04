@@ -16,7 +16,7 @@ import java.util.Set;
 public class ServiceController  {
 
     private final LifecycleTimeline timeline;
-    private final ArrayList<Object> services = new ArrayList<>();
+    private final ArrayList<Object> services = new ArrayList<Object>();
 
     @Inject
     public ServiceController(LifecycleTimeline timeline, @Named("services") Set<Object> services) {

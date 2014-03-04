@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class ModuleController {
 
-    private List<Module> modules = new ArrayList<>();
+    private List<Module> modules = new ArrayList<Module>();
     private LifecycleTimeline timeline;
     private final Stage stage;
 

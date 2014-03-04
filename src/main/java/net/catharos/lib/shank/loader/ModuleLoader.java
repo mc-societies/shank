@@ -1,10 +1,10 @@
 package net.catharos.lib.shank.loader;
 
 import com.google.inject.Module;
-import net.catharos.engine.core.filesystem.Directory;
 import net.catharos.lib.shank.ModuleDescription;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ public abstract class ModuleLoader {
     public static final String PARENT_CLASSLOADER = "parent-classloader";
 
     private final ClassLoader defaultParent;
-    private final Directory modulesDirectory;
+    private final File modulesDirectory;
 
-    public ModuleLoader(ClassLoader defaultParent, Directory modulesDirectory) {
+    public ModuleLoader(ClassLoader defaultParent, File modulesDirectory) {
         this.defaultParent = defaultParent;
         this.modulesDirectory = modulesDirectory;
     }
@@ -27,7 +27,7 @@ public abstract class ModuleLoader {
     public List<Module> loadModules() throws ModuleLoadingException {
         Set<ModuleDescription> descriptions = loadDescriptions();
 
-        List<Module> modules = new ArrayList<>(descriptions.size());
+        List<Module> modules = new ArrayList<Module>(descriptions.size());
 
         for (ModuleDescription description : descriptions) {
             modules.add(load(description));
@@ -61,12 +61,12 @@ public abstract class ModuleLoader {
         return defaultParent;
     }
 
-    protected Directory getModulesDirectory() {
+    protected File getModulesDirectory() {
         return modulesDirectory;
     }
 
-    public Directory getModuleDirectory(String name) throws IOException {
-        return Directory.createDirectory(modulesDirectory, name);
+    public File getModuleDirectory(String name) throws IOException {
+        return new File(modulesDirectory, name);
     }
 
 //    private static TopologicalSortedList.Node<ModuleDescription> findModuleDescription0(TopologicalSortedList<ModuleDescription> descs, String name) {
