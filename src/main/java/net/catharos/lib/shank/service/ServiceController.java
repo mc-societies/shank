@@ -3,10 +3,14 @@ package net.catharos.lib.shank.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
+import net.catharos.lib.shank.logging.InjectLogger;
 import net.catharos.lib.shank.service.lifecycle.Lifecycle;
 import net.catharos.lib.shank.service.lifecycle.LifecycleContext;
+import net.catharos.lib.shank.service.lifecycle.LifecycleException;
 import net.catharos.lib.shank.service.lifecycle.LifecycleTimeline;
+import org.apache.logging.log4j.Logger;
 
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -19,11 +23,16 @@ public class ServiceController {
     private final LifecycleTimeline timeline;
     private final LifecycleContext context;
     private final ArrayList<Object> services = new ArrayList<Object>();
+    private final UncaughtExceptionHandler exceptionHandler;
+
+    @InjectLogger
+    private Logger logger;
 
     @Inject
-    public ServiceController(LifecycleTimeline timeline, LifecycleContext context, @Named("services") Set<Object> services) {
+    public ServiceController(LifecycleTimeline timeline, LifecycleContext context, @Named("services") Set<Object> services, UncaughtExceptionHandler exceptionHandler) {
         this.timeline = timeline;
         this.context = context;
+        this.exceptionHandler = exceptionHandler;
 
         for (Object service : services) {
             prepare(service);
@@ -34,7 +43,12 @@ public class ServiceController {
         Lifecycle[] previous = timeline.getPrevious();
 
         for (Lifecycle lifecycle : previous) {
-            lifecycle.invoke(obj, context);
+            try {
+                lifecycle.invoke(obj, context);
+            } catch (LifecycleException e) {
+                logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + obj);
+                exceptionHandler.uncaughtException(Thread.currentThread(), e);
+            }
         }
 
         services.add(obj);
@@ -47,7 +61,14 @@ public class ServiceController {
 
     public void invoke() {
         for (Object service : services) {
-            timeline.getCurrentLifecycle().invoke(service, context);
+            Lifecycle lifecycle = timeline.getCurrentLifecycle();
+
+            try {
+                lifecycle.invoke(service, context);
+            } catch (LifecycleException e) {
+                logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
+                exceptionHandler.uncaughtException(Thread.currentThread(), e);
+            }
         }
     }
 

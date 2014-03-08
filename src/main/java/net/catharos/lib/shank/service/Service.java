@@ -5,9 +5,9 @@ package net.catharos.lib.shank.service;
  */
 public interface Service<C> {
 
-    void init(C context);
+    void init(C context) throws Exception;
 
-    void start(C context);
+    void start(C context) throws Exception;
 
-    void stop(C context);
+    void stop(C context) throws Exception;
 }
