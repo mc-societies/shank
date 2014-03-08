@@ -14,7 +14,6 @@ import java.util.Set;
  * Used to load modules
  */
 public abstract class ModuleLoader {
-    public static final String PARENT_CLASSLOADER = "parent-classloader";
 
     private final ClassLoader defaultParent;
     private final File modulesDirectory;
@@ -68,14 +67,4 @@ public abstract class ModuleLoader {
     public File getModuleDirectory(String name) throws IOException {
         return new File(modulesDirectory, name);
     }
-
-//    private static TopologicalSortedList.Node<ModuleDescription> findModuleDescription0(TopologicalSortedList<ModuleDescription> descs, String name) {
-//        for (TopologicalSortedList.Node<ModuleDescription> desc : descs) {
-//            if (desc.getValue().getName().equals(name)) {
-//                return desc;
-//            }
-//        }
-//
-//        return null;
-//    }
 }

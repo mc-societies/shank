@@ -15,21 +15,21 @@ public enum Lifecycle {
     NEW(new EmptyInvoker()),
     INITIALISING(new AnnotationInvoker(Init.class) {
         @Override
-        public void invoke(Service service) {
-            service.init();
+        public <C> void invokeLifecycle(Service<C> service, C context) {
+            service.init(context);
         }
     }),
     STARTING(new AnnotationInvoker(Start.class) {
         @Override
-        public void invoke(Service service) {
-            service.start();
+        public <C> void invokeLifecycle(Service<C> service, C context) {
+            service.start(context);
         }
     }),
     RUNNING(new EmptyInvoker()),
     STOPPING(new AnnotationInvoker(Stop.class) {
         @Override
-        public void invoke(Service service) {
-            service.stop();
+        public <C> void invokeLifecycle(Service<C> service, C context) {
+            service.stop(context);
         }
     }),
     TERMINATED(new EmptyInvoker());
@@ -40,12 +40,8 @@ public enum Lifecycle {
         this.invoker = invoker;
     }
 
-    public ServiceInvoker getInvoker() {
-        return invoker;
-    }
-
-    public void invoke(Object obj) {
-        getInvoker().invoke(obj);
+    public void invoke(Object obj, LifecycleContext context) {
+        invoker.invoke(obj, context);
     }
 
     public static LifecycleTimeline createTimeline() {

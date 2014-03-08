@@ -7,6 +7,7 @@ import net.catharos.lib.shank.loader.reflect.RegisteredModule;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,6 @@ import java.util.Set;
  */
 public abstract class ModuleDirectoryLoader extends ModuleLoader {
     private static final ExtensionFilter ARCHIVE_FILTER = new ExtensionFilter("jar", "zip", "plugin");
-//    private final ObjectMapper mapper = new ObjectMapper();
 
     public ModuleDirectoryLoader(ClassLoader defaultParent, File modulesDirectory) {
         super(defaultParent, modulesDirectory);
@@ -23,29 +23,16 @@ public abstract class ModuleDirectoryLoader extends ModuleLoader {
 
     @Override
     public Set<ModuleDescription> loadDescriptions() throws ModuleLoadingException {
+        File[] files = getModulesDirectory().listFiles(ARCHIVE_FILTER);
+
+        if (files == null) {
+            return Collections.emptySet();
+        }
+
         Set<ModuleDescription> modules = new HashSet<ModuleDescription>();
 
-        for (File path : getModulesDirectory().listFiles(ARCHIVE_FILTER)) {
+        for (File path : files) {
             String absolutePath = path.getAbsolutePath();
-
-//                ZipFile zf;
-//                try {
-//                    zf = new ZipFile(absolutePath);
-//                } catch (IOException e) {
-//                    throw new ModuleLoadingException(null, "Failed to open " + absolutePath + "!");
-//                }
-
-//                ZipEntry entry = zf.getEntry("module.json");
-//
-//                JsonNode moduleConfig;
-//                try {
-//                    moduleConfig = mapper.readTree(zf.getInputStream(entry));
-//                } catch (IOException e) {
-//                    throw new ModuleLoadingException(null, e);
-//                }
-//
-//
-//                JsonNode modulesClassesJson = moduleConfig.get("modules");
 
             URL url;
 

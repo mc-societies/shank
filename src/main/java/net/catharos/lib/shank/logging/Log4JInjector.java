@@ -28,8 +28,8 @@ public class Log4JInjector<T> implements MembersInjector<T> {
 
     Log4JInjector(Field field, String name, File logFolder, LoggerContext context) {
         this.field = field;
-        LoggingHelper.addUniqueFileAppender(context, name, new File(logFolder, name + ".log"));
         logger = context.getLogger(name, DEFAULT_MESSAGE_FACTORY);
+        LoggingHelper.addUniqueFileAppender(context, name, new File(logFolder, name + ".log"));
     }
 
     private static String getName(Class clazz) {

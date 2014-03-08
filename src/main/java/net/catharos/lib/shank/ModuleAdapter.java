@@ -185,21 +185,4 @@ public abstract class ModuleAdapter implements Module {
     protected void bindListener(Matcher<? super TypeLiteral<?>> typeMatcher, TypeListener listener) {
         binder().bindListener(typeMatcher, listener);
     }
-
-//    /**
-//     * Outputs .dot file to visualize the injector of this module
-//     *
-//     * @param out The output
-//     * @throws IOException
-//     */
-//    public void print(PrintWriter out) throws IOException {
-//        Injector injector = Guice.createInjector(new GrapherModule(), new GraphvizModule());
-//
-//        GraphvizRenderer renderer = injector.getInstance(GraphvizRenderer.class);
-//        renderer.setOut(out).setRankdir("TB");
-//
-//        injector.getInstance(InjectorGrapher.class)
-//                .of(injector())
-//                .graph();
-//    }
 }

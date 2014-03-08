@@ -30,10 +30,12 @@ public class ModuleReflectionLoader extends ModuleDirectoryLoader {
 
     @Override
     protected Iterable<Class<?>> getModuleClasses(URL url, ModuleClassLoader classLoader) {
+        ConfigurationBuilder builder = new ConfigurationBuilder()
+                .addUrls(ClasspathHelper.forPackage(prefix, classLoader))
+                .setScanners(new SubTypesScanner(false), new TypeAnnotationsScanner());
+
         Reflections reflections = new Reflections(
-                new ConfigurationBuilder()
-                        .addUrls(ClasspathHelper.forPackage(prefix, classLoader))
-                        .setScanners(new SubTypesScanner(false), new TypeAnnotationsScanner()));
+                builder);
 
         Set<String> annotated = reflections.getStore().getTypesAnnotatedWith(RegisteredModule.class.getName());
         Set<String> foundModules = reflections.getStore().getSubTypesOf(Module.class.getName());

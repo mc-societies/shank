@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import net.catharos.lib.shank.service.lifecycle.Lifecycle;
+import net.catharos.lib.shank.service.lifecycle.LifecycleContext;
 import net.catharos.lib.shank.service.lifecycle.LifecycleTimeline;
 
 import java.util.ArrayList;
@@ -13,14 +14,16 @@ import java.util.Set;
  * Represents a ServiceController
  */
 @Singleton
-public class ServiceController  {
+public class ServiceController {
 
     private final LifecycleTimeline timeline;
+    private final LifecycleContext context;
     private final ArrayList<Object> services = new ArrayList<Object>();
 
     @Inject
-    public ServiceController(LifecycleTimeline timeline, @Named("services") Set<Object> services) {
+    public ServiceController(LifecycleTimeline timeline, LifecycleContext context, @Named("services") Set<Object> services) {
         this.timeline = timeline;
+        this.context = context;
 
         for (Object service : services) {
             prepare(service);
@@ -31,15 +34,20 @@ public class ServiceController  {
         Lifecycle[] previous = timeline.getPrevious();
 
         for (Lifecycle lifecycle : previous) {
-            lifecycle.getInvoker().invoke(obj);
+            lifecycle.invoke(obj, context);
         }
 
         services.add(obj);
     }
 
+    public void invoke(Lifecycle lifecycle) {
+        timeline.setCurrentLifecycle(lifecycle);
+        invoke();
+    }
+
     public void invoke() {
         for (Object service : services) {
-            timeline.getCurrentLifecycle().invoke(service);
+            timeline.getCurrentLifecycle().invoke(service, context);
         }
     }
 

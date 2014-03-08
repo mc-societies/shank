@@ -1,32 +1,13 @@
 package net.catharos.lib.shank.service;
 
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
-
-import java.util.concurrent.Future;
-
 /**
  * Represents a Service
  */
-public interface Service {
+public interface Service<C> {
 
-    void init();
+    void init(C context);
 
-    void start();
+    void start(C context);
 
-    void stop();
-
-    Future initService();
-
-    Future startService();
-
-    Future stopService();
-
-    <T> T get(Class<T> type);
-
-    <T> T get(Key<T> key);
-
-    <T> T get(TypeLiteral<T> literal);
-
-    <T> T getNamed(Class<T> type, String name);
+    void stop(C context);
 }

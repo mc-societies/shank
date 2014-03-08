@@ -14,36 +14,40 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Represents a ModuleController
+ * Represents a InjectorBuilder
  */
-public class ModuleController {
+public class InjectorBuilder {
 
     private List<Module> modules = new ArrayList<Module>();
     private LifecycleTimeline timeline;
     private final Stage stage;
 
-    public ModuleController(Module... otherModules) {
+    public InjectorBuilder(Module... otherModules) {
         this(Stage.DEVELOPMENT, otherModules);
     }
 
-    public ModuleController(Stage stage, Module... otherModules) {
+    public InjectorBuilder(Stage stage, Module... otherModules) {
         this.stage = stage;
         Collections.addAll(modules, otherModules);
         timeline = Lifecycle.createTimeline();
     }
 
-    public void loadModules(ModuleLoader loader) throws ModuleLoadingException {
+    public InjectorBuilder loadModules(ModuleLoader loader) throws ModuleLoadingException {
         loadModules(loader.loadModules());
+        return this;
     }
 
-    public void loadModules(Iterable<Module> modules) {
+    public InjectorBuilder loadModules(Iterable<Module> modules) {
         for (Module module : modules) {
             loadModule(module);
         }
+
+        return this;
     }
 
-    public void loadModule(Module module) {
+    public InjectorBuilder loadModule(Module module) {
         modules.add(module);
+        return this;
     }
 
     public List<Module> getModulesList() {
