@@ -3,7 +3,6 @@ package net.catharos.lib.shank.service;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import net.catharos.lib.shank.logging.InjectLogger;
 import net.catharos.lib.shank.service.lifecycle.Lifecycle;
 import net.catharos.lib.shank.service.lifecycle.LifecycleContext;
 import net.catharos.lib.shank.service.lifecycle.LifecycleException;
@@ -20,16 +19,19 @@ import java.util.Set;
 @Singleton
 public class ServiceController {
 
+    private final Logger logger;
     private final LifecycleTimeline timeline;
     private final LifecycleContext context;
     private final ArrayList<Object> services = new ArrayList<Object>();
     private final UncaughtExceptionHandler exceptionHandler;
 
-    @InjectLogger
-    private Logger logger;
-
     @Inject
-    public ServiceController(LifecycleTimeline timeline, LifecycleContext context, @Named("services") Set<Object> services, UncaughtExceptionHandler exceptionHandler) {
+    public ServiceController(@Named("service-logger") Logger logger,
+                             LifecycleTimeline timeline,
+                             LifecycleContext context,
+                             @Named("services") Set<Object> services,
+                             UncaughtExceptionHandler exceptionHandler) {
+        this.logger = logger;
         this.timeline = timeline;
         this.context = context;
         this.exceptionHandler = exceptionHandler;
@@ -46,7 +48,9 @@ public class ServiceController {
             try {
                 lifecycle.invoke(obj, context);
             } catch (LifecycleException e) {
-                logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + obj);
+                if (logger != null) {
+                    logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + obj);
+                }
                 exceptionHandler.uncaughtException(Thread.currentThread(), e);
             }
         }
@@ -66,7 +70,9 @@ public class ServiceController {
             try {
                 lifecycle.invoke(service, context);
             } catch (LifecycleException e) {
-                logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
+                if (logger != null) {
+                    logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
+                }
                 exceptionHandler.uncaughtException(Thread.currentThread(), e);
             }
         }
