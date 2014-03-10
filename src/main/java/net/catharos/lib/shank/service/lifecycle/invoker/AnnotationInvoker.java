@@ -24,7 +24,18 @@ public abstract class AnnotationInvoker extends DefaultInvoker {
         for (Method method : obj.getClass().getDeclaredMethods()) {
             if (method.isAnnotationPresent(annotation)) {
                 try {
-                    method.invoke(obj, context);
+                    Class<?>[] parameters = method.getParameterTypes();
+                    if (parameters.length > 1
+                            || parameters.length == 1 && parameters[0].isAssignableFrom(LifecycleContext.class)) {
+                        throw new LifecycleException("Lifecycle methods must have no parameters or a LifecycleContext as parameter! %s", method);
+                    }
+
+                    if (parameters.length == 0) {
+                        method.invoke(obj);
+                    } else {
+                        method.invoke(obj, context);
+                    }
+
                 } catch (IllegalAccessException e) {
                     throw new LifecycleException(e);
                 } catch (InvocationTargetException e) {
