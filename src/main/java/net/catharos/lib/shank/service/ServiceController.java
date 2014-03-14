@@ -41,21 +41,19 @@ public class ServiceController {
         }
     }
 
-    public void prepare(Object obj) {
+    public void prepare(Object service) {
         Lifecycle[] previous = timeline.getPrevious();
 
         for (Lifecycle lifecycle : previous) {
             try {
-                lifecycle.invoke(obj, context);
+                lifecycleInfo(lifecycle, service);
+                lifecycle.invoke(service, context);
             } catch (LifecycleException e) {
-                if (logger != null) {
-                    logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + obj);
-                }
-                exceptionHandler.uncaughtException(Thread.currentThread(), e);
+                lifecycleFailed(lifecycle, e, service);
             }
         }
 
-        services.add(obj);
+        services.add(service);
     }
 
     public void invoke(Lifecycle lifecycle) {
@@ -68,14 +66,25 @@ public class ServiceController {
             Lifecycle lifecycle = timeline.getCurrentLifecycle();
 
             try {
+                lifecycleInfo(lifecycle, service);
                 lifecycle.invoke(service, context);
             } catch (LifecycleException e) {
-                if (logger != null) {
-                    logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
-                }
-                exceptionHandler.uncaughtException(Thread.currentThread(), e);
+                lifecycleFailed(lifecycle, e, service);
             }
         }
+    }
+
+    private void lifecycleInfo(Lifecycle lifecycle, Object service) {
+        if (logger != null && lifecycle.getMessage() != null) {
+            logger.info(String.format(lifecycle.getMessage(), service.getClass().getSimpleName()));
+        }
+    }
+
+    private void lifecycleFailed(Lifecycle lifecycle, Throwable throwable, Object service) {
+        if (logger != null) {
+            logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
+        }
+        exceptionHandler.uncaughtException(Thread.currentThread(), throwable);
     }
 
     public LifecycleTimeline getTimeline() {
