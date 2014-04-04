@@ -82,7 +82,7 @@ public class ServiceController {
 
     private void lifecycleFailed(Lifecycle lifecycle, Throwable throwable, Object service) {
         if (logger != null) {
-            logger.fatal("Exception occurred while running lifecycle" + lifecycle + " of " + service);
+            logger.fatal("Exception occurred while running lifecycle " + lifecycle + " of " + service);
         }
         exceptionHandler.uncaughtException(Thread.currentThread(), throwable);
     }
