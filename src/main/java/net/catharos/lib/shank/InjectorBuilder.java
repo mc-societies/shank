@@ -4,6 +4,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
+import net.catharos.lib.core.util.CastSafe;
 import net.catharos.lib.shank.loader.ModuleLoader;
 import net.catharos.lib.shank.loader.ModuleLoadingException;
 import net.catharos.lib.shank.service.lifecycle.Lifecycle;
@@ -64,5 +65,19 @@ public class InjectorBuilder {
 
     public LifecycleTimeline getTimeline() {
         return timeline;
+    }
+
+    public void clear() {
+        this.modules.clear();
+    }
+
+    public <M extends Module> M get(Class<? extends M> type) {
+        for (Module module : modules) {
+            if (module.getClass() == type) {
+                return CastSafe.toGeneric(module);
+            }
+        }
+
+        return null;
     }
 }
