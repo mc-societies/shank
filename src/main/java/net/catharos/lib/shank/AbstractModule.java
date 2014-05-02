@@ -11,7 +11,7 @@ import com.google.inject.spi.TypeListener;
 
 import java.lang.annotation.Annotation;
 
-public abstract class ModuleAdapter implements Module {
+public abstract class AbstractModule implements Module {
 
     private Binder binder;
 
