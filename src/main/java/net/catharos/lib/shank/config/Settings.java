@@ -1,7 +1,6 @@
 package net.catharos.lib.shank.config;
 
 import java.lang.annotation.Annotation;
-import java.util.Objects;
 
 /**
  * Represents a Configs
@@ -31,12 +30,12 @@ public class Settings {
             Setting that = (Setting) o;
 
 
-            return Objects.equals(name, that.name());
+            return name.equals(that.name());
         }
 
         @Override
         public int hashCode() {
-            return Objects.hashCode(name);
+            return name.hashCode();
         }
 
         @Override
