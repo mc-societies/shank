@@ -8,7 +8,7 @@ import net.catharos.lib.shank.AbstractModule;
 /**
  * Represents a ServiceModuleAdapter
  */
-public abstract class ServiceModuleAdapter extends AbstractModule {
+public abstract class AbstractServiceModule extends AbstractModule {
 
     protected LinkedBindingBuilder<Object> bindService() {
         Multibinder<Object> services = Multibinder.newSetBinder(binder(), Object.class, Names.named("services"));

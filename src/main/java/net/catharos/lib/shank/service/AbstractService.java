@@ -5,7 +5,7 @@ import net.catharos.lib.shank.service.lifecycle.LifecycleContext;
 /**
  * Represents a ServiceAdapter
  */
-public class ServiceAdapter<C extends LifecycleContext> implements Service<C> {
+public class AbstractService<C extends LifecycleContext> implements Service<C> {
 
     @Override
     public void init(C context) throws Exception {}
