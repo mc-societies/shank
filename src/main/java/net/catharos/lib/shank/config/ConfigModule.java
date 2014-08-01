@@ -2,6 +2,8 @@ package net.catharos.lib.shank.config;
 
 import com.google.common.base.Function;
 import com.google.inject.AbstractModule;
+import com.google.inject.Key;
+import com.google.inject.name.Names;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.procedure.TObjectObjectProcedure;
@@ -25,8 +27,11 @@ public class ConfigModule extends AbstractModule {
         config.forEachEntry(new TObjectObjectProcedure<String, Object>() {
             @Override
             public boolean execute(String a, Object b) {
-                Class<Object> aClass = CastSafe.toGeneric(b.getClass());
-                bind(aClass).annotatedWith(Settings.create(a)).toInstance(b);
+                Class<Object> clazz = CastSafe.toGeneric(b.getClass());
+                Key<Object> settingKey = Key.get(clazz, Settings.create(a));
+                Key<Object> namedKey = Key.get(clazz, Names.named(a));
+                bind(settingKey).toInstance(b);
+                bind(namedKey).toInstance(b);
                 return true;
             }
         });
