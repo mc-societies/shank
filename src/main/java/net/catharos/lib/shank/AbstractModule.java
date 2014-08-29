@@ -33,6 +33,10 @@ public abstract class AbstractModule implements Module {
         bindNamed(name, clazz).toInstance(instance);
     }
 
+    protected <T> void bindNamedInstance(String name, TypeLiteral<T> literal, T instance) {
+        bindNamed(name, literal).toInstance(instance);
+    }
+
     protected void bindNamedString(String name, String string) {
         bindNamedInstance(name, String.class, string);
     }
