@@ -33,6 +33,7 @@ public class JSONSource implements Function<Map<String, Object>, Map<String, Obj
         JsonFactory f = new JsonFactory();
 
         try {
+
             JsonParser jp = f.createJsonParser(file);
             jp.nextToken();
             walk(input, new LinkedList<String>(), jp);
