@@ -16,6 +16,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @BindingAnnotation
 public @interface Setting {
 
-    String name();
+    String value();
 
 }

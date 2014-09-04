@@ -30,6 +30,7 @@ public class ConfigModule extends AbstractModule {
                 Class<Object> clazz = CastSafe.toGeneric(b.getClass());
                 Key<Object> settingKey = Key.get(clazz, Settings.create(a));
                 Key<Object> namedKey = Key.get(clazz, Names.named(a));
+
                 bind(settingKey).toInstance(b);
                 bind(namedKey).toInstance(b);
                 return true;

@@ -84,7 +84,7 @@ public class JSONSource implements Function<Map<String, Object>, Map<String, Obj
         StringBuilder builder = new StringBuilder();
 
         for (String key : stack) {
-            builder.append(key).append('-');
+            builder.append(key).append('.');
         }
 
         if (name == null) {

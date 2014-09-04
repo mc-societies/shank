@@ -21,7 +21,7 @@ public class TypeSafeConfigSource implements Function<Map<String, Object>, Map<S
     public Map<String, Object> apply(Map<String, Object> input) {
 
         for (Map.Entry<String, ConfigValue> entry : config.entrySet()) {
-            input.put(entry.getKey().replace('.', '-'), entry.getValue().unwrapped());
+            input.put(entry.getKey(), entry.getValue().unwrapped());
         }
 
         return input;

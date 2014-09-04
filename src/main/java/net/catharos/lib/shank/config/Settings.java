@@ -13,13 +13,13 @@ public class Settings {
 
     private static final class BasicConfig implements Setting {
 
-        private final String name;
+        private final String value;
 
-        private BasicConfig(String name) {this.name = name;}
+        private BasicConfig(String value) {this.value = value;}
 
         @Override
-        public String name() {
-            return name;
+        public String value() {
+            return value;
         }
 
         @Override
@@ -30,17 +30,17 @@ public class Settings {
             Setting that = (Setting) o;
 
 
-            return name.equals(that.name());
+            return value.equals(that.value());
         }
 
         @Override
         public int hashCode() {
-            return name.hashCode();
+            return value.hashCode();
         }
 
         @Override
         public String toString() {
-            return "Config{" + name() + "}";
+            return "Config{" + value() + "}";
         }
 
         @Override
