@@ -3,7 +3,7 @@ package net.catharos.lib.shank.logging;
 import com.google.inject.Binder;
 import com.google.inject.Module;
 import com.google.inject.matcher.Matchers;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.spi.LoggerContext;
 
 import java.io.File;
 
@@ -26,6 +26,6 @@ public class LoggingModule implements Module {
     }
 
     public void stop() {
-        context.stop();
+//        context.stop();
     }
 }

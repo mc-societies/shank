@@ -1,15 +1,13 @@
 package net.catharos.lib.shank.logging;
 
 import com.google.inject.MembersInjector;
-import net.catharos.lib.core.logging.LoggingHelper;
 import net.catharos.lib.shank.ModuleDescription;
 import net.catharos.lib.shank.loader.ModuleClassLoader;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.message.StringFormatterMessageFactory;
+import org.apache.logging.log4j.spi.LoggerContext;
 
-import java.io.File;
 import java.lang.reflect.Field;
 
 /**
@@ -22,14 +20,14 @@ public class Log4JInjector<T> implements MembersInjector<T> {
     private final Field field;
     private final Logger logger;
 
-    Log4JInjector(Field field, Class clazz, File logFolder, LoggerContext context) {
-       this(field, getName(clazz), logFolder, context);
+    Log4JInjector(Field field, Class clazz, LoggerContext context) {
+       this(field, getName(clazz), context);
     }
 
-    Log4JInjector(Field field, String name, File logFolder, LoggerContext context) {
+    Log4JInjector(Field field, String name, LoggerContext context) {
         this.field = field;
         logger = context.getLogger(name, DEFAULT_MESSAGE_FACTORY);
-        LoggingHelper.addUniqueFileAppender(context, name, new File(logFolder, name + ".log"));
+//        LoggingHelper.addUniqueFileAppender(context, name, new File(logFolder, name + ".log"));
     }
 
     private static String getName(Class clazz) {

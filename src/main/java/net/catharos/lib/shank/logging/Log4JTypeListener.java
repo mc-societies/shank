@@ -4,7 +4,7 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.spi.LoggerContext;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -35,9 +35,9 @@ public class Log4JTypeListener implements TypeListener {
                     Log4JInjector<T> memberInjector;
 
                     if (annotation.name().isEmpty()) {
-                        memberInjector = new Log4JInjector<T>(field, typeLiteral.getRawType(), directory, context);
-                    }   else {
-                        memberInjector = new Log4JInjector<T>(field, annotation.name(), directory, context);
+                        memberInjector = new Log4JInjector<T>(field, typeLiteral.getRawType(), context);
+                    } else {
+                        memberInjector = new Log4JInjector<T>(field, annotation.name(), context);
                     }
 
                     typeEncounter.register(memberInjector);
