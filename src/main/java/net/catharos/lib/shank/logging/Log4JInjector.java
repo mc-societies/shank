@@ -21,7 +21,7 @@ public class Log4JInjector<T> implements MembersInjector<T> {
     private final Logger logger;
 
     Log4JInjector(Field field, Class clazz, LoggerContext context) {
-       this(field, getName(clazz), context);
+        this(field, getName(clazz), context);
     }
 
     Log4JInjector(Field field, String name, LoggerContext context) {
