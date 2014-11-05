@@ -4,7 +4,6 @@ import com.google.common.collect.Sets;
 import com.google.inject.Module;
 import net.catharos.lib.shank.loader.ModuleClassLoader;
 import net.catharos.lib.shank.loader.ModuleDirectoryLoader;
-import org.reflections.ReflectionUtils;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -34,13 +33,11 @@ public class ModuleReflectionLoader extends ModuleDirectoryLoader {
                 .addUrls(ClasspathHelper.forPackage(prefix, classLoader))
                 .setScanners(new SubTypesScanner(false), new TypeAnnotationsScanner());
 
-        Reflections reflections = new Reflections(
-                builder);
+        Reflections reflections = new Reflections(builder);
 
-        Set<String> annotated = reflections.getStore().getTypesAnnotatedWith(RegisteredModule.class.getName());
-        Set<String> foundModules = reflections.getStore().getSubTypesOf(Module.class.getName());
-        Sets.SetView<String> result = Sets.intersection(annotated, foundModules);
+        Set<Class<?>> annotated = reflections.getTypesAnnotatedWith(RegisteredModule.class);
+        Set<Class<? extends Module>> foundModules = reflections.getSubTypesOf(Module.class);
 
-        return ReflectionUtils.forNames(result, classLoader);
+        return Sets.intersection(annotated, foundModules);
     }
 }
