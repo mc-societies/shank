@@ -6,7 +6,6 @@ import com.google.inject.spi.TypeListener;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.spi.LoggerContext;
 
-import java.io.File;
 import java.lang.reflect.Field;
 
 
@@ -14,18 +13,16 @@ import java.lang.reflect.Field;
  * Represents a Log4JTypeListener
  */
 public class Log4JTypeListener implements TypeListener {
-
-    private final File directory;
     private final LoggerContext context;
 
-    public Log4JTypeListener(File directory, LoggerContext context) {
-        this.directory = directory;
+    public Log4JTypeListener(LoggerContext context) {
         this.context = context;
     }
 
     @Override
     public <T> void hear(TypeLiteral<T> typeLiteral, TypeEncounter<T> typeEncounter) {
 
+        //beautify cache
         for (Field field : typeLiteral.getRawType().getDeclaredFields()) {
 
             InjectLogger annotation = field.getAnnotation(InjectLogger.class);
