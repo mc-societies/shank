@@ -100,6 +100,20 @@
         </snapshotRepository>
     </distributionManagement>
 
+    <repositories>
+        <repository>
+            <id>frederik-schmitt-releases</id>
+            <name>Snapshots</name>
+            <url>http://repo.frederik-schmitt.de/content/repositories/oss-releases</url>
+        </repository>
+
+        <repository>
+            <id>frederik-schmitt-snapshots</id>
+            <name>Snapshots</name>
+            <url>http://repo.frederik-schmitt.de/content/repositories/oss-snapshots</url>
+        </repository>
+    </repositories>
+
     <build>
         <plugins>
             <plugin>
