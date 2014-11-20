@@ -4,7 +4,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.spi.TypeEncounter;
 import com.google.inject.spi.TypeListener;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.spi.LoggerContext;
 
 import java.lang.reflect.Field;
 
@@ -13,11 +12,10 @@ import java.lang.reflect.Field;
  * Represents a Log4JTypeListener
  */
 public class Log4JTypeListener implements TypeListener {
-    private final LoggerContext context;
 
-    public Log4JTypeListener(LoggerContext context) {
-        this.context = context;
-    }
+    private final Logger logger;
+
+    public Log4JTypeListener(Logger logger) {this.logger = logger;}
 
     @Override
     public <T> void hear(TypeLiteral<T> typeLiteral, TypeEncounter<T> typeEncounter) {
@@ -32,9 +30,9 @@ public class Log4JTypeListener implements TypeListener {
                     Log4JInjector<T> memberInjector;
 
                     if (annotation.name().isEmpty()) {
-                        memberInjector = new Log4JInjector<T>(field, typeLiteral.getRawType(), context);
+                        memberInjector = new Log4JInjector<T>(field, typeLiteral.getRawType(), logger);
                     } else {
-                        memberInjector = new Log4JInjector<T>(field, annotation.name(), context);
+                        memberInjector = new Log4JInjector<T>(field, annotation.name(), logger);
                     }
 
                     typeEncounter.register(memberInjector);

@@ -6,7 +6,6 @@ import net.catharos.lib.shank.loader.ModuleClassLoader;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.message.StringFormatterMessageFactory;
-import org.apache.logging.log4j.spi.LoggerContext;
 
 import java.lang.reflect.Field;
 
@@ -20,13 +19,13 @@ public class Log4JInjector<T> implements MembersInjector<T> {
     private final Field field;
     private final Logger logger;
 
-    Log4JInjector(Field field, Class clazz, LoggerContext context) {
-        this(field, getName(clazz), context);
+    Log4JInjector(Field field, Class clazz, Logger logger) {
+        this(field, getName(clazz), logger);
     }
 
-    Log4JInjector(Field field, String name, LoggerContext context) {
+    Log4JInjector(Field field, String name, Logger logger) {
         this.field = field;
-        logger = context.getLogger(name, DEFAULT_MESSAGE_FACTORY);
+        this.logger = logger;
 //        LoggingHelper.addUniqueFileAppender(context, name, new File(logFolder, name + ".log"));
     }
 
