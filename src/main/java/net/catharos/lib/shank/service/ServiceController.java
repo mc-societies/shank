@@ -76,6 +76,17 @@ public class ServiceController {
 
     private void lifecycleInfo(Lifecycle lifecycle, Object service) {
         if (logger != null && lifecycle.getMessage() != null) {
+
+            try {
+                String name = lifecycle.getMethodName();
+
+                if (name != null) {
+                    service.getClass().getMethod(name, Object.class);
+                }
+            } catch (NoSuchMethodException e) {
+                return;
+            }
+
             logger.info(String.format(lifecycle.getMessage(), service.getClass().getSimpleName()));
         }
     }

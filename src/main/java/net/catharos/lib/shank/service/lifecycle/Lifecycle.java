@@ -19,30 +19,32 @@ public enum Lifecycle {
         public <C> void invokeLifecycle(Service<C> service, C context) throws Exception {
             service.init(context);
         }
-    }, "Initialising %s..."),
+    }, "Initialising %s...", "init"),
     STARTING(new AnnotationInvoker(Start.class) {
         @Override
         public <C> void invokeLifecycle(Service<C> service, C context) throws Exception {
             service.start(context);
         }
-    }, "Starting %s..."),
+    }, "Starting %s...", "start"),
     RUNNING(new EmptyInvoker()),
     STOPPING(new AnnotationInvoker(Stop.class) {
         @Override
         public <C> void invokeLifecycle(Service<C> service, C context) throws Exception {
             service.stop(context);
         }
-    }, "Stopping %s..."),
+    }, "Stopping %s...", "stop"),
     TERMINATED(new EmptyInvoker());
 
     private ServiceInvoker invoker;
     private String message;
+    private final String methodName;
 
-    Lifecycle(ServiceInvoker invoker) {this(invoker, null);}
+    Lifecycle(ServiceInvoker invoker) {this(invoker, null, null);}
 
-    Lifecycle(ServiceInvoker invoker, @Nullable String message) {
+    Lifecycle(ServiceInvoker invoker, @Nullable String message, String methodName) {
         this.invoker = invoker;
         this.message = message;
+        this.methodName = methodName;
     }
 
     @Nullable
@@ -56,5 +58,9 @@ public enum Lifecycle {
 
     public static LifecycleTimeline createTimeline() {
         return new LifecycleTimeline(Lifecycle.values());
+    }
+
+    public String getMethodName() {
+        return methodName;
     }
 }
