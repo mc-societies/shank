@@ -7,11 +7,11 @@ import java.lang.annotation.Annotation;
  */
 public class Settings {
 
-    public static Setting create(String name) {
+    public static ConfigSetting create(String name) {
         return new BasicConfig(name);
     }
 
-    private static final class BasicConfig implements Setting {
+    private static final class BasicConfig implements ConfigSetting {
 
         private final String value;
 
@@ -24,18 +24,17 @@ public class Settings {
 
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (!(o instanceof ConfigSetting)) {
+                return false;
+            }
 
-            Setting that = (Setting) o;
-
-
-            return value.equals(that.value());
+            ConfigSetting other = (ConfigSetting) o;
+            return value.equals(other.value());
         }
 
         @Override
         public int hashCode() {
-            return value.hashCode();
+            return (127 * "value".hashCode()) ^ value.hashCode();
         }
 
         @Override
@@ -45,7 +44,7 @@ public class Settings {
 
         @Override
         public Class<? extends Annotation> annotationType() {
-            return Setting.class;
+            return ConfigSetting.class;
         }
     }
 }
