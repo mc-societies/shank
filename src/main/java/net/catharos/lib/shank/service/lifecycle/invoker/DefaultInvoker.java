@@ -24,5 +24,4 @@ public abstract class DefaultInvoker implements ServiceInvoker {
 
     public abstract <C> void invokeLifecycle(Service<C> service, C context) throws Exception;
 
-    ;
 }
