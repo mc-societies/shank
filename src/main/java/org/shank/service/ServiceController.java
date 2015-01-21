@@ -83,7 +83,7 @@ public class ServiceController {
                 if (name != null) {
                     service.getClass().getMethod(name, Object.class);
                 }
-            } catch (NoSuchMethodException e) {
+            } catch (NoSuchMethodException ignored) {
                 return;
             }
 

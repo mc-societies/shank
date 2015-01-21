@@ -38,7 +38,7 @@ public abstract class ModuleDirectoryLoader extends ModuleLoader {
 
             try {
                 url = path.toURI().toURL();
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException ignored) {
                 throw new ModuleLoadingException(null, "Could not create an url of the file " + absolutePath + "!");
             }
 
