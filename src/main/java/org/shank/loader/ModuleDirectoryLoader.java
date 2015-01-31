@@ -7,9 +7,12 @@ import org.shank.loader.reflect.RegisteredModule;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import static java.security.AccessController.doPrivileged;
 
 /**
  * Represents a ModuleDirectoryLoader
@@ -34,7 +37,7 @@ public abstract class ModuleDirectoryLoader extends ModuleLoader {
         for (File path : files) {
             String absolutePath = path.getAbsolutePath();
 
-            URL url;
+            final URL url;
 
             try {
                 url = path.toURI().toURL();
@@ -42,7 +45,12 @@ public abstract class ModuleDirectoryLoader extends ModuleLoader {
                 throw new ModuleLoadingException(null, "Could not create an url of the file " + absolutePath + "!");
             }
 
-            ModuleClassLoader moduleClassLoader = new ModuleClassLoader(getParentClassLoader(), url);
+            ModuleClassLoader moduleClassLoader = doPrivileged(new PrivilegedAction<ModuleClassLoader>() {
+                @Override
+                public ModuleClassLoader run() {
+                    return new ModuleClassLoader(getParentClassLoader(), url);
+                }
+            });
 
             for (Class<?> moduleClass : getModuleClasses(url, moduleClassLoader)) {
                 RegisteredModule annotation = moduleClass.getAnnotation(RegisteredModule.class);

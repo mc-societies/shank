@@ -87,7 +87,8 @@ public class ServiceController {
                 return;
             }
 
-            logger.info(String.format(lifecycle.getMessage(), service.getClass().getSimpleName()));
+            String name = service.getClass().getSimpleName();
+            logger.info(String.format(lifecycle.getMessage(), name));
         }
     }
 
