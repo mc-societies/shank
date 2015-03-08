@@ -24,17 +24,20 @@ public class ServiceController {
     private final LifecycleContext context;
     private final ArrayList<Object> services = new ArrayList<Object>();
     private final UncaughtExceptionHandler exceptionHandler;
+    private final boolean info;
 
     @Inject
     public ServiceController(@Named("service-logger") Logger logger,
                              LifecycleTimeline timeline,
                              LifecycleContext context,
                              @Named("services") Set<Object> services,
-                             UncaughtExceptionHandler exceptionHandler) {
+                             UncaughtExceptionHandler exceptionHandler,
+                             @Named("lifecycle-info") boolean info) {
         this.logger = logger;
         this.timeline = timeline;
         this.context = context;
         this.exceptionHandler = exceptionHandler;
+        this.info = info;
 
         for (Object service : services) {
             prepare(service);
@@ -75,6 +78,10 @@ public class ServiceController {
     }
 
     private void lifecycleInfo(Lifecycle lifecycle, Object service) {
+        if (!info) {
+            return;
+        }
+
         if (logger != null && lifecycle.getMessage() != null) {
 
             try {
