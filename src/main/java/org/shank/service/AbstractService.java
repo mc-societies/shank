@@ -8,11 +8,14 @@ import org.shank.service.lifecycle.LifecycleContext;
 public class AbstractService<C extends LifecycleContext> implements Service<C> {
 
     @Override
-    public void init(C context) throws Exception {}
+    public void init(C context) throws Exception {
+    }
 
     @Override
-    public void start(C context) throws Exception {}
+    public void start(C context) throws Exception {
+    }
 
     @Override
-    public void stop(C context) throws Exception {}
+    public void stop(C context) throws Exception {
+    }
 }

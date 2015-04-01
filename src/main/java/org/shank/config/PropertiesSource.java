@@ -12,7 +12,9 @@ public class PropertiesSource implements Function<Map<String, Object>, Map<Strin
 
     private final Properties properties;
 
-    public PropertiesSource(Properties properties) {this.properties = properties;}
+    public PropertiesSource(Properties properties) {
+        this.properties = properties;
+    }
 
     @Override
     public Map<String, Object> apply(Map<String, Object> input) {

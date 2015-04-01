@@ -39,7 +39,9 @@ public enum Lifecycle {
     private String message;
     private final String methodName;
 
-    Lifecycle(ServiceInvoker invoker) {this(invoker, null, null);}
+    Lifecycle(ServiceInvoker invoker) {
+        this(invoker, null, null);
+    }
 
     Lifecycle(ServiceInvoker invoker, @Nullable String message, String methodName) {
         this.invoker = invoker;

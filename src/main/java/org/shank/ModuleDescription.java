@@ -2,7 +2,9 @@ package org.shank;
 
 import org.shank.loader.ModuleClassLoader;
 
-/** Represents a ModuleDescription */
+/**
+ * Represents a ModuleDescription
+ */
 public class ModuleDescription<S> {
     private final String name;
     private final Class<?> moduleClass;
@@ -17,7 +19,9 @@ public class ModuleDescription<S> {
         this.classLoader = classLoader;
     }
 
-    /** @return The name of the plugin */
+    /**
+     * @return The name of the plugin
+     */
     public String getName() {
         return name;
     }
@@ -34,7 +38,9 @@ public class ModuleDescription<S> {
         return classLoader;
     }
 
-    /** @return The source of this plugin */
+    /**
+     * @return The source of this plugin
+     */
     public S getSource() {
         return source;
     }

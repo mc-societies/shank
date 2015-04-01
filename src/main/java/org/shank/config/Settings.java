@@ -15,7 +15,9 @@ public class Settings {
 
         private final String value;
 
-        private BasicConfig(String value) {this.value = value;}
+        private BasicConfig(String value) {
+            this.value = value;
+        }
 
         @Override
         public String value() {
