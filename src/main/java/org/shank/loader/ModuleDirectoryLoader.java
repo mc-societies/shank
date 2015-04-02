@@ -1,6 +1,6 @@
 package org.shank.loader;
 
-import net.catharos.lib.core.util.ExtensionFilter;
+
 import org.shank.ModuleDescription;
 import org.shank.loader.reflect.RegisteredModule;
 

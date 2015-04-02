@@ -1,6 +1,7 @@
 package org.shank.service.lifecycle;
 
-import net.catharos.lib.core.collections.ArrayUtil;
+
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Represents a LifecycleTimeline
@@ -26,7 +27,7 @@ public class LifecycleTimeline {
 
         Lifecycle[] previous = new Lifecycle[length];
         System.arraycopy(lifecycles, 0, previous, 0, length);
-        ArrayUtil.reverse(previous);
+        ArrayUtils.reverse(previous);
 
         return previous;
     }
@@ -51,8 +52,8 @@ public class LifecycleTimeline {
     }
 
     private int indexOf(Lifecycle lifecycle) {
-        int index = ArrayUtil.indexOf(lifecycles, lifecycle);
-        if (index == ArrayUtil.INDEX_NOT_FOUND) {
+        int index = ArrayUtils.indexOf(lifecycles, lifecycle);
+        if (index == ArrayUtils.INDEX_NOT_FOUND) {
             throw new IllegalStateException("Lifecycle " + lifecycle + " not in this timeline!");
         }
         return index;

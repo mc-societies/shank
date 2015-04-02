@@ -4,7 +4,6 @@ import com.google.inject.PrivateModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.name.Names;
-import net.catharos.lib.core.util.CastSafe;
 
 /**
  * Represents a AbstractPrivateModule
@@ -19,7 +18,7 @@ public abstract class AbstractPrivateModule extends PrivateModule {
     }
 
     protected <T> void bindNamedInstance(String name, T instance) {
-        Class<T> type = CastSafe.toGeneric(instance.getClass());
+        Class<T> type = (Class<T>) instance.getClass();
         bindNamedInstance(name, type, instance);
     }
 

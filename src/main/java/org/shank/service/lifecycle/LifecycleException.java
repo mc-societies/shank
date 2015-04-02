@@ -1,25 +1,26 @@
 package org.shank.service.lifecycle;
 
-import net.catharos.lib.core.lang.ArgumentException;
 
 /**
  * Represents a LifecycleException
  */
-public class LifecycleException extends ArgumentException {
-
+public class LifecycleException extends Exception {
     public LifecycleException() {
-        super();
     }
 
-    public LifecycleException(String message, Object... args) {
-        super(message, args);
+    public LifecycleException(String message) {
+        super(message);
     }
 
-    public LifecycleException(Throwable cause, String message, Object... args) {
-        super(cause, message, args);
+    public LifecycleException(String message, Throwable cause) {
+        super(message, cause);
     }
 
     public LifecycleException(Throwable cause) {
         super(cause);
+    }
+
+    public LifecycleException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

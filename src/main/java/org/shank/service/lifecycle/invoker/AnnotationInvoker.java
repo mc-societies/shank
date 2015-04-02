@@ -27,7 +27,7 @@ public abstract class AnnotationInvoker extends DefaultInvoker {
                     Class<?>[] parameters = method.getParameterTypes();
                     if (parameters.length > 1
                             || parameters.length == 1 && parameters[0].isAssignableFrom(LifecycleContext.class)) {
-                        throw new LifecycleException("Lifecycle methods must have no parameters or a LifecycleContext as parameter! %s", method);
+                        throw new LifecycleException("Lifecycle methods must have no parameters or a LifecycleContext as parameter! " + method);
                     }
 
                     if (parameters.length == 0) {

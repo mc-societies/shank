@@ -8,7 +8,6 @@ import com.google.inject.matcher.Matcher;
 import com.google.inject.name.Names;
 import com.google.inject.spi.TypeConverter;
 import com.google.inject.spi.TypeListener;
-import net.catharos.lib.core.util.CastSafe;
 
 import java.lang.annotation.Annotation;
 
@@ -25,7 +24,7 @@ public abstract class AbstractModule implements Module {
     }
 
     protected <T> void bindNamedInstance(String name, T instance) {
-        Class<T> type = CastSafe.toGeneric(instance.getClass());
+        Class<T> type = (Class<T>) instance.getClass();
         bindNamedInstance(name, type, instance);
     }
 
